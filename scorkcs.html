@@ -425,6 +425,63 @@ section {
   scroll-margin-top: var(--header-height);
 }
 
+/* ---------- Mobile header fit fix ---------- */
+/* Keeps header content visible on narrow screens / overlaying browser chrome.
+   Only CSS changes — no HTML or text changes. */
+
+@media (max-width: 768px) {
+  /* make header accommodate safe area + small padding */
+  header{
+    /* keep a fixed height variable but include safe inset if present (non-destructive) */
+    height: calc(var(--header-height) + env(safe-area-inset-top, 0px));
+    /* push header content below status bar / notch */
+    padding-top: calc(env(safe-area-inset-top, 0px) + 8px);
+    align-items: flex-start;         /* allow content to stack nicely */
+    box-sizing: border-box;
+  }
+
+  /* make brand layout more compact so it fits within header */
+  .brand {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+
+  .brand img{
+    /* reduce logo height on mobile so title and tagline have room */
+    height: 56px;
+    min-height: 40px;
+    width: auto;
+  }
+
+  .brand strong{
+    font-size: 20px;    /* slightly smaller than desktop */
+    line-height: 1.02;  /* less line wrapping */
+    display: block;
+  }
+
+  .brand .tagline{
+    font-size: 12px;
+    line-height: 1.1;
+    margin-top: 4px;
+  }
+
+  /* ensure controls stay vertically centered within the padded header */
+  .controls {
+    padding-top: 4px;
+  }
+
+  /* slightly reduce nav link font to avoid pushing header taller */
+  nav.desktop-nav a {
+    font-size: 14px;
+  }
+
+  /* give the main page content a safe offset equal to header height */
+  body {
+    padding-top: calc(var(--header-height) + env(safe-area-inset-top, 0px));
+  }
+}
+
   </style>
 </head>
 <body>
@@ -617,7 +674,7 @@ section {
       <div class="card">
         <p>Email: <a href="mailto:contact@scorkcs.com">contact@scorkcs.com</a></p>
         <p>Phone: +91 8618941559</p>
-        <p>Address: 11, Yuva's Wonderland, K Channasandra, Bangalore - 560043</p>
+        <p>Address: <br/> Scork Consultancy Services, <br/> 11, Yuva's Wonderland, <br/> K Channasandra, <br/> Bangalore - 560043</p>
       </div>
     </section>
   </main>
@@ -988,6 +1045,44 @@ section {
         header.classList.remove('header-opaque');
       }
     });
+	
+	
+  // --- START: dynamic header-height sync (paste this near the end of your <script>) ---
+  (function syncHeaderHeight(){
+    const headerEl = document.getElementById('siteHeader');
+    if(!headerEl) return;
+
+    function applyHeaderHeight(){
+      // measure actual header height (rounded)
+      const h = Math.ceil(headerEl.getBoundingClientRect().height);
+      // update CSS variable so CSS that uses var(--header-height) adapts
+      document.documentElement.style.setProperty('--header-height', h + 'px');
+      // ensure body padding-top equals header height so top content isn't hidden
+      document.body.style.paddingTop = h + 'px';
+      // Also set scroll-margin-top for any anchorable sections dynamically
+      // (helps anchors like #about, #services stop earlier)
+      document.querySelectorAll('section[id]').forEach(sec=>{
+        sec.style.scrollMarginTop = h + 'px';
+      });
+    }
+
+    // initial apply
+    applyHeaderHeight();
+
+    // update on resize (debounced)
+    let rr;
+    window.addEventListener('resize', ()=>{ clearTimeout(rr); rr = setTimeout(applyHeaderHeight, 80); }, {passive:true});
+
+    // also observe header for size/content changes (e.g., when the logo wraps or mobile menu opens)
+    const mo = new MutationObserver(()=> applyHeaderHeight());
+    mo.observe(headerEl, { attributes: true, childList: true, subtree: true, characterData: true });
+
+    // If any CSS transitions change header height (rare), also handle after load
+    window.addEventListener('load', ()=> setTimeout(applyHeaderHeight, 60));
+  })();
+  // --- END: dynamic header-height sync ---
+
+
 
   </script>
 
