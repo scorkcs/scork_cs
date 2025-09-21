@@ -8,14 +8,6 @@
   <meta name="author" content="Scork Consultancy Services">
   <meta name="theme-color" content="#2979ff">
   <style>
-	  
-															  
-																					  
-																						  
-																		   
-																		 
-	  
-
     :root{
       --brand: #2f7be6;
       --accent: #174fad;
@@ -34,8 +26,6 @@
       --header-height: 160px;
       --transition-fast: 180ms;
       --transition-medium: 300ms;
-
-						
       --progress-bg: rgba(10,14,20,0.06);
       --progress-fill: linear-gradient(90deg,var(--brand),var(--accent));
     }
@@ -52,6 +42,100 @@
       --progress-bg: rgba(255,255,255,0.06);
       --progress-fill: linear-gradient(90deg,#79b7ff,#a0c9ff);
     }
+	
+	/* Dark mode overrides */
+html.dark .service-card {
+  background: #0b1a32; /* dark card background */
+  color: #e6eefb;
+}
+
+html.dark .service-card h3 {
+  color: #ffffff; /* bright title */
+}
+
+html.dark .service-card .card-excerpt {
+  color: #cbd5e1; /* light muted text */
+}
+
+html.dark .detail-card {
+  background: #0f2138; /* dark detail background */
+  color: #e6eefb;
+}
+
+html.dark .detail-card h2 {
+  color: #ffffff;
+}
+
+html.dark .detail-card p,
+html.dark .detail-card ul {
+  color: #d1d5db; /* softer white for readability */
+}
+
+html.dark .breadcrumb {
+  color: #9ca3af;
+}
+
+/* ---------- Dark-mode header fixes ---------- */
+/* Place this after your existing html.dark {...} block */
+
+html.dark header {
+  /* Dark translucent header so light text is readable over it */
+  background: linear-gradient(180deg, rgba(5,12,25,0.86), rgba(8,16,32,0.86));
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+  box-shadow: 0 8px 30px rgba(2,6,12,0.6);
+}
+
+/* Keep header fully dark when the "opaque" class is applied */
+html.dark header.header-opaque {
+  background: linear-gradient(180deg, #071227, #071227);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.6);
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+
+/* Ensure text inside the header/nav is readable in dark mode.
+   We use the --text-primary variable already set in html.dark (light color). */
+html.dark .nav,
+html.dark .brand a,
+html.dark nav.desktop-nav a,
+html.dark .theme-toggle,
+html.dark .brand strong,
+html.dark .brand .tagline,
+html.dark .hamburger span {
+  color: var(--text-primary) !important;
+}
+
+/* Brand strong and tagline specifically */
+html.dark .brand strong { color: var(--text-primary); }
+html.dark .brand .tagline { color: var(--muted); }
+
+/* Desktop nav links */
+html.dark nav.desktop-nav a { color: var(--text-primary); }
+html.dark nav.desktop-nav a:hover,
+html.dark nav.desktop-nav a:focus { color: var(--brand); }
+
+/* Hamburger bars (ensure visible) */
+html.dark .hamburger span {
+  background: var(--text-primary);
+}
+
+/* Theme-toggle button border/box in dark mode */
+html.dark .theme-toggle {
+  border-color: rgba(255,255,255,0.06);
+  background: rgba(255,255,255,0.02);
+  color: var(--text-primary);
+}
+
+/* Mobile nav (when open) background + link color */
+html.dark nav.mobile-nav {
+  background: var(--card); /* var(--card) in dark mode is dark */
+  color: var(--text-primary);
+}
+html.dark nav.mobile-nav a { color: var(--text-primary); }
+
+html.dark .controls svg, html.dark .controls img { filter: none; }
+
 
     *{box-sizing:border-box}
     html{scroll-behavior:smooth}
@@ -99,7 +183,6 @@
     .brand strong{ font-size:34px; line-height:1; letter-spacing:-0.4px; display:block; color:var(--text-primary) }
     .brand .tagline{ font-size:13px; color:var(--muted) }
 
-					  
     .controls { display:flex; align-items:center; gap:10px; }
     .theme-toggle {
       display:inline-flex; align-items:center; gap:8px;
@@ -109,12 +192,10 @@
     }
     .theme-toggle:hover{ transform:translateY(-2px) }
 
-					 
     nav.desktop-nav ul{ display:flex; gap:28px; align-items:center; margin:0; padding:0; list-style:none }
     nav.desktop-nav a{ font-weight:600; font-size:15px; padding:8px 6px; display:inline-block; color:var(--text-primary) }
     nav.desktop-nav a:hover, nav.desktop-nav a:focus{ color:var(--brand); outline:none }
 
-				  
     .dropdown-content{
       display:none;
       position:absolute;
@@ -139,7 +220,6 @@
     .dropdown-content a{ display:block; padding:12px 16px; border-radius:8px; font-weight:500; color:var(--text-primary); font-size:14px }
     .dropdown-content a:hover, .dropdown-content a:focus{ background: linear-gradient(90deg,#f7fbff,#f3f8ff); color:var(--accent); transform:translateX(4px); transition:transform .18s ease }
 
-				   
     .hamburger{
       display:none;
       width:36px; height:28px; cursor:pointer;
@@ -154,7 +234,6 @@
     .hamburger:hover{ background: rgba(15,23,36,0.04) }
     .hamburger span{ display:block; height:3px; width:100%; border-radius:3px; background:linear-gradient(90deg,var(--text-primary), rgba(16,24,40,0.85)); transition: transform .18s ease, opacity .18s ease; }
 
-							   
     nav.mobile-nav{
       display:none;
       position:fixed;
@@ -220,7 +299,6 @@
       text-decoration: none;
       text-align:center;
     }
-																 
     .cta-button::after{
       content:"";
       position:absolute;
@@ -236,15 +314,10 @@
       50%{ transform:scale(1.03); opacity:1 }
       100%{ transform:scale(1); opacity:1 }
     }
-					   
     .cta-button.pulse { animation: pulse-slow 2.6s ease-in-out infinite; }
-	 
     .cta-button:hover{ transform:translateY(-6px); box-shadow:0 30px 60px rgba(47,123,230,0.32) }
-
-																							  
     .hero-content .cta-button { box-shadow: 0 18px 40px rgba(9,30,66,0.35); border: 1px solid rgba(255,255,255,0.06) }
 
-				  
     .services-section{ background:linear-gradient(180deg,#0f2138 0%, #11293f 100%); color:var(--text-inverse); padding:20px 0 48px 0 }
     .services-title{ text-align:center; font-size:2.4rem; margin:14px 0 10px; font-weight:800; color:#f8fbff }
     .services-sub{ text-align:center; color:rgba(255,255,255,0.75); max-width:860px; margin:0 auto 28px }
@@ -277,7 +350,6 @@
     .card-body h3{ margin:0 0 8px; font-size:1.05rem; color:#0f1724; font-weight:800 }
     .card-excerpt{ margin:0; color:#475569; font-size:0.95rem }
 
-										  
     .service-icon {
       position:absolute;
       top:14px; right:14px;
@@ -292,7 +364,6 @@
     }
     .service-card:hover .service-icon{ transform:translateY(-4px) }
 
-					 
     .detail-view{ display:none; padding:80px 20px; position:relative; z-index:2001; }
     .detail-card{
       max-width:930px; margin:0 auto; background:linear-gradient(180deg,#fff,#fbfdff);
@@ -308,7 +379,6 @@
     .detail-nav .cta-button:hover{ color:var(--accent) }
     .detail-nav .home-icon{ font-size:18px }
 
-																				 
     .detail-progress {
       position:absolute; left:0; right:0; top:0; height:6px;
       background:var(--progress-bg);
@@ -349,6 +419,11 @@
       outline: 3px solid rgba(41,121,255,0.12);
       outline-offset:4px;
     }
+	
+	/* Prevent content from being hidden under fixed header */
+section {
+  scroll-margin-top: var(--header-height);
+}
 
   </style>
 </head>
@@ -399,7 +474,6 @@
 
           <li id="mobile-services-item">
             <a href="#services" class="nav-link mobile-link services-toggle">Services</a>
-
           </li>
 
           <li><a href="#contact" class="nav-link mobile-link">Contact</a></li>
@@ -663,7 +737,6 @@
     const detailProgressFill = document.getElementById('detailProgressFill');
     const header = document.getElementById('siteHeader');
     const hero = document.getElementById('hero');
- 
     function updateNavLabels(idx){
       prevBtn.innerHTML = `← Previous`;
       nextBtn.innerHTML = `Next →`;
@@ -678,9 +751,9 @@
       detailText.innerHTML = details[key].html;
       breadcrumb.textContent = `Service ${idx + 1} of ${serviceOrder.length}`;
 	  updateNavLabels(idx);
-      mainContent.style.visibility = 'hidden';
-      mainContent.style.position = 'absolute';
-      mainContent.style.width = '100%';
+      // --- REPLACED: hide main content using display none (prevents page height expansion) ---
+      mainContent.style.display = 'none';
+      // --- end replacement ---
       detailView.style.display = 'block';
       detailView.setAttribute('aria-hidden','false');
       detailText.scrollTop = 0;
@@ -691,8 +764,9 @@
       detailView.style.display = 'none';
       detailView.setAttribute('aria-hidden','true');
       detailText.removeEventListener('scroll', onDetailScroll);
-      mainContent.style.visibility = 'visible';
-      mainContent.style.position = 'relative';
+      // --- REPLACED: restore main content display (instead of visibility/position) ---
+      mainContent.style.display = 'block';
+      // --- end replacement ---
       detailProgressFill.style.width = '0%';
     }
     function updateDetailProgress(){
@@ -708,11 +782,8 @@
     // Wire up cards & dropdown items
     document.querySelectorAll('.service-card').forEach(card=>{
       card.addEventListener('click', ()=> openDetail(card.getAttribute('data-service')));
-																						 
       card.addEventListener('keydown', (ev) => { if(ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); openDetail(card.getAttribute('data-service')); } });
-																														
     });
-	   
     document.querySelectorAll('.dropdown-item').forEach(item=>{
       item.addEventListener('click', e => { e.preventDefault(); openDetail(item.getAttribute('data-service')); });
       item.addEventListener('keydown', ev => { if(ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); openDetail(item.getAttribute('data-service')); }});
@@ -817,11 +888,6 @@
         // Only remove the class if the user scrolled down afterwards (we check position)
         if(window.scrollY > 40){
           header.classList.remove('header-opaque');
-											 
-				
-							 
-						
-														 
         }
         // If still at very top, leave it opaque (user likely wants that look)
       }, 900); // 900ms gives time for scroll animation to finish; tweak if needed
@@ -834,35 +900,10 @@
       } else {
         // If near very top, ensure header is opaque (keeps UI consistent)
         header.classList.add('header-opaque');
-						
-								   
-												 
-														   
-		 
-						 
-		 
-	   
-
-											 
-																							
-														
       }
     }, { passive: true });
 
     // Desktop dropdown positioning (keeps original behavior)
-															   
-										   
-									
-							 
-						
-														 
-														   
-		 
-		 
-	   
-
-																										   
-
     const servicesLink = document.getElementById('services-link');
     const desktopDropdown = document.getElementById('desktop-dropdown');
     function positionDesktopDropdown(){
@@ -870,7 +911,6 @@
       if(window.innerWidth <= 768){ desktopDropdown.style.left=''; desktopDropdown.style.width=''; desktopDropdown.setAttribute('aria-hidden','true'); return; }
       const linkRect = servicesLink.getBoundingClientRect();
       const navRect = document.getElementById('desktop-nav').getBoundingClientRect();
-																					 
       const computedWidth = Math.min(380, Math.max(300, 320));
       const left = linkRect.left + (linkRect.width/2) - (computedWidth/2) - navRect.left;
       const maxLeft = navRect.width - computedWidth - 8;
@@ -884,11 +924,7 @@
 
     // Show/hide aria-hidden for desktop dropdown on hover (accessibility)
     document.getElementById('services-menu').addEventListener('mouseenter', ()=>{ desktopDropdown.setAttribute('aria-hidden','false'); });
-																				 
-														  
     document.getElementById('services-menu').addEventListener('mouseleave', ()=>{ desktopDropdown.setAttribute('aria-hidden','true'); });
-																				 
-														 
 
     // CTA pulse update
     const heroCta = document.getElementById('heroCta');
@@ -951,7 +987,8 @@
       } else {
         header.classList.remove('header-opaque');
       }
-    });												   
+    });
+
   </script>
 
 </body>
